@@ -1,11 +1,10 @@
-const BASE_URL = 'https://restcountries.com/v3.1/all?';
+const BASE_URL = 'https://restcountries.com/v3.1/name';
 
-const fetchCountries = search => {
-  const response = fetch(`${BASE_URL}fields=name,capital,population,flags,languages`);  
-  if (!response.ok) {    
-    throw new Error(response.status);    
+const fetchCountries = async name => {
+  const response = await fetch(`${BASE_URL}/${name}?fields=name,capital,population,flags,languages`);  
+  if (response.status >= 400 && response.status <= 599) {    
+    return Promise.reject(new Error());    
   }
-  return response.json();
+  return await response.json();
 };
-
 export { fetchCountries };
